@@ -1,0 +1,46 @@
+.root{
+    -fx-background-image:url('file:C:/Univesity/Lithuania/secondSemester/ProgrammingTechnologies/backgroundMain.jpg');
+    -fx-background-size: cover;
+}
+
+.text-input {
+   -fx-background-color: #D8AA86;
+   -fx-text-fill: "black";
+   -fx-prompt-text-fill:"white";
+}
+
+.text-input:hover {
+    -fx-background-color: transparent, white, transparent, #F8DBC5;
+}
+
+.text-input:focused{
+     -fx-background-color: transparent, white, transparent, #F8DBC5;
+}
+
+
+.button {
+    -fx-background-color: "#552805";
+    -fx-border-color: "#F6DDCC";
+    -fx-border-width: 1;
+    -fx-font-size: 14;
+    -fx-text-fill: "#F6DDCC";
+}
+
+.button:hover {
+    -fx-background-color: transparent, #663107, transparent, transparent ;
+    -fx-border-width: 2;
+}
+
+.label {
+        -fx-text-fill: "#F6DDCC";
+}
+.list-view {
+    -fx-background-color: "#D8AA86";
+    -fx-border-color: "black";
+    -fx-border-width: 1;
+}
+
+.combo-box-base {
+    -fx-background-color: #D8AA86;
+}
+

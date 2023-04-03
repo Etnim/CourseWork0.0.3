@@ -1,0 +1,43 @@
+.root{
+    -fx-background-image:url('file:C:/Univesity/Lithuania/secondSemester/ProgrammingTechnologies/backgroundRegistr.jpg');
+    -fx-background-size: cover;
+}
+
+.button {
+    -fx-background-color: transparent;
+    -fx-border-color: "white";
+    -fx-border-width: 1;
+    -fx-font-size: 14;
+    -fx-text-fill: "white";
+}
+
+.button:hover {
+    -fx-border-width: 2;
+}
+
+.label {
+    -fx-text-fill: "white";
+}
+
+.text-input {
+   -fx-background-color: #686971;
+   -fx-text-fill: #292A31;
+   -fx-prompt-text-fill: "white";
+}
+
+.text-input:hover {
+    -fx-background-color: transparent, transparent, transparent, #B8B9C2;
+}
+
+.text-input:focused{
+    -fx-background-color: transparent, #E5E7F8, transparent, #B8B9C2;
+}
+
+.radio-button {
+    -fx-text-fill: "white";
+}
+.radio-button: hover{}
+.radio-button:focused{
+
+
+}

@@ -1,0 +1,34 @@
+.root{
+    -fx-background-image:url('file:C:/Univesity/Lithuania/secondSemester/ProgrammingTechnologies/background.png');
+    -fx-background-size: cover;
+}
+.text-input {
+    -fx-background-color: transparent;
+    -fx-text-fill: "white";
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: "white";
+}
+.button {
+    -fx-background-color: transparent;
+    -fx-border-color: "white";
+    -fx-border-width: 1;
+    -fx-font-size: 14;
+    -fx-text-fill: "white";
+}
+
+.button:hover {
+    -fx-border-width: 2;
+}
+.label {
+    -fx-text-fill: "white";
+}
+#forgotBut {
+    -fx-border-width: 0;
+    -fx-underline: true;
+    -fx-font-size: 12;
+    -fx-text-fill: #A9A9A9;
+}
+
+#forgotBut:hover{
+    -fx-text-fill: "white";
+}
