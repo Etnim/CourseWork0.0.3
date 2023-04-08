@@ -123,15 +123,15 @@
                                             <content>
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="302.0" prefWidth="600.0">
                                                     <children>
-                                                        <TableView prefHeight="212.0" prefWidth="600.0">
+                                                        <TableView fx:id="managerTableView" prefHeight="212.0" prefWidth="600.0">
                                                             <columns>
-                                                                <TableColumn prefWidth="75.0" text="id" />
-                                                                <TableColumn prefWidth="75.0" text="login" />
-                                                                <TableColumn prefWidth="75.0" text="name" />
-                                                                <TableColumn prefWidth="75.0" text="surname" />
-                                                                <TableColumn prefWidth="75.0" text="email" />
-                                                                <TableColumn prefWidth="75.0" text="is_admin" />
-                                                                <TableColumn prefWidth="75.0" text="phone_num" />
+                                                                <TableColumn fx:id="mColId" prefWidth="75.0" text="id" />
+                                                                <TableColumn fx:id="mColLog" prefWidth="75.0" text="login" />
+                                                                <TableColumn fx:id="mColName" prefWidth="75.0" text="name" />
+                                                                <TableColumn fx:id="mColSurname" prefWidth="75.0" text="surname" />
+                                                                <TableColumn fx:id="mColEmail" prefWidth="75.0" text="email" />
+                                                                <TableColumn fx:id="mColIsAdmin" prefWidth="75.0" text="is_admin" />
+                                                                <TableColumn fx:id="mColPhone" prefWidth="75.0" text="phone_num" />
                                                             </columns>
                                                         </TableView>
                                                     </children>
@@ -142,16 +142,16 @@
                                             <content>
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                     <children>
-                                                        <TableView prefHeight="210.0" prefWidth="600.0">
+                                                        <TableView fx:id="driverTableView" prefHeight="210.0" prefWidth="600.0">
                                                             <columns>
-                                                                <TableColumn prefWidth="75.0" text="id" />
-                                                                <TableColumn prefWidth="75.0" text="login" />
-                                                                <TableColumn prefWidth="75.0" text="name" />
-                                                                <TableColumn prefWidth="75.0" text="surname" />
-                                                                <TableColumn prefWidth="75.0" text="email" />
-                                                                <TableColumn prefWidth="75.0" text="birth_date" />
-                                                                <TableColumn prefWidth="75.0" text="driv_license" />
-                                                                <TableColumn prefWidth="75.0" text="med_certf" />
+                                                                <TableColumn fx:id="dColId" prefWidth="75.0" text="id" />
+                                                                <TableColumn fx:id="dColLog" prefWidth="75.0" text="login" />
+                                                                <TableColumn fx:id="dColName" prefWidth="75.0" text="name" />
+                                                                <TableColumn fx:id="dColSurname" prefWidth="75.0" text="surname" />
+                                                                <TableColumn fx:id="dColEmail" prefWidth="75.0" text="email" />
+                                                                <TableColumn fx:id="dColBirth" prefWidth="75.0" text="birth_date" />
+                                                                <TableColumn fx:id="dColLicense" prefWidth="75.0" text="driv_license" />
+                                                                <TableColumn fx:id="dColCertificate" prefWidth="75.0" text="med_certf" />
                                                             </columns>
                                                         </TableView>
                                                     </children>
