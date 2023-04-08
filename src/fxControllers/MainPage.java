@@ -1,6 +1,9 @@
 package fxControllers;
 
-import hibernateControllers.*;
+import hibernateControllers.HibernateControllers;
+import hibernateControllers.UserHibernate;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,30 +11,34 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.*;
 
 import javax.persistence.EntityManagerFactory;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MainPage implements Initializable {
+    private final ObservableList<DriverTable> driverData = FXCollections.observableArrayList();
+    private final ObservableList<ManagerTable> managerData = FXCollections.observableArrayList();
     @FXML
     public Tab truckTub;
     @FXML
     public Tab cargoTub;
     @FXML
     public Tab tripTub;
+
+    //Cargo
     @FXML
     public Tab forumTub;
     @FXML
     public Button profileBut;
-
-    //Cargo
-
     @FXML
     public TextField cargoWeight;
     @FXML
@@ -51,14 +58,13 @@ public class MainPage implements Initializable {
     public Button cargoResetBut;
     @FXML
     public Button updateCargo;
+
+
+    //Truck
     @FXML
     public Button cargoReset;
     @FXML
     public Button deleteCargo;
-
-
-    //Truck
-
     @FXML
     public TextField truckManufactureYear;
     @FXML
@@ -79,14 +85,13 @@ public class MainPage implements Initializable {
     public Button truckResetBut;
     @FXML
     public Button deleteTruck;
+
+
+    //Checkpoint
     @FXML
     public Button updateTruck;
     @FXML
     public ListView<Truck> truckListField;
-
-
-    //Checkpoint
-
     @FXML
     public TextField checkpointTitle;
     @FXML
@@ -101,8 +106,6 @@ public class MainPage implements Initializable {
     public Button updateCheckpoint;
     @FXML
     public ListView<CheckPoint> checkpointListField;
-
-
     //Trip
     @FXML
     public TextField startPointTitle;
@@ -138,43 +141,54 @@ public class MainPage implements Initializable {
     public ListView<Manager> tripManagerList;
     @FXML
     public ListView<CheckPoint> tripCheckList;
+    @FXML
     public Button forumBut;
 
 
+    @FXML
+    public Tab managerTub;
+    @FXML
+    public TableView<ManagerTable> managerTableView;
+    @FXML
+    public TableColumn<ManagerTable, Integer> mColId;
+    @FXML
+    public TableColumn<ManagerTable, String> mColLog;
+    @FXML
+    public TableColumn<ManagerTable, String> mColName;
+    @FXML
+    public TableColumn<ManagerTable, String> mColSurname;
+    @FXML
+    public TableColumn<ManagerTable, String> mColEmail;
+    @FXML
+    public TableColumn<ManagerTable, Boolean> mColIsAdmin;
+    @FXML
+    public TableColumn<ManagerTable, String> mColPhone;
+
+
+    @FXML
+    public Tab driverTub;
+    @FXML
+    public TableView<DriverTable> driverTableView;
+    @FXML
+    public TableColumn<DriverTable, Integer> dColId;
+    @FXML
+    public TableColumn<DriverTable, String> dColLog;
+    @FXML
+    public TableColumn<DriverTable, String> dColName;
+    @FXML
+    public TableColumn<DriverTable, String> dColSurname;
+    @FXML
+    public TableColumn<DriverTable, String> dColEmail;
+    @FXML
+    public TableColumn<DriverTable, LocalDate> dColBirth;
+    @FXML
+    public TableColumn<DriverTable, String> dColLicense;
+    @FXML
+    public TableColumn<DriverTable, String> dColCertificate;
     private EntityManagerFactory emf;
     private UserHibernate userHibernate;
-    private CargoHibernate cargoHibernate;
-    private CheckpointHibernate checkpointHibernate;
-    private TripHibernate tripHibernate;
-    private TruckHibernate truckHibernate;
-
-
+    private HibernateControllers hibControllers;
     private User loggedUser;
-
-
-    public void setData(EntityManagerFactory emf) {
-        this.emf = emf;
-        this.userHibernate = new UserHibernate(emf);
-        this.cargoHibernate = new CargoHibernate(emf);
-        this.checkpointHibernate = new CheckpointHibernate(emf);
-        this.truckHibernate = new TruckHibernate(emf);
-        this.tripHibernate = new TripHibernate(emf);
-
-        cargoListField.getItems().addAll(cargoHibernate.getAllItems());
-        checkpointListField.getItems().addAll(checkpointHibernate.getAllItems());
-        truckListField.getItems().addAll(truckHibernate.getAllItems());
-        tripListField.getItems().addAll(tripHibernate.getAllItems());
-
-        tripCargoList.getItems().addAll(cargoHibernate.getAllItems());
-        tripCheckList.getItems().addAll(checkpointHibernate.getAllItems());
-        tripTruckList.getItems().addAll(truckHibernate.getAllItems());
-        tripManagerList.getItems().addAll(userHibernate.getAllManagers());
-        tripDriverList.getItems().addAll(userHibernate.getAllDrivers());
-    }
-
-    public void setInfo(User user) {
-        this.loggedUser = user;
-    }
 
     public void addCargo() {
         Cargo cargo;
@@ -183,7 +197,7 @@ public class MainPage implements Initializable {
         } else {
             cargo = new Cargo(Integer.parseInt(cargoWeight.getText()), Integer.parseInt(cargoVolume.getText()), Integer.parseInt(cargoPrice.getText()), cargoTitle.getText(), cargoType.getSelectionModel().getSelectedItem(), cargoDescription.getText());
         }
-        cargoHibernate.createCargo(cargo);
+        hibControllers.create(cargo);
         cargoListField.getItems().add(cargo);
 
         tripCargoList.getItems().add(cargo);
@@ -203,7 +217,7 @@ public class MainPage implements Initializable {
         } else {
             cargo = new Cargo(Integer.parseInt(cargoWeight.getText()), Integer.parseInt(cargoVolume.getText()), Integer.parseInt(cargoPrice.getText()), cargoTitle.getText(), cargoType.getSelectionModel().getSelectedItem(), cargoDescription.getText());
         }
-        cargoHibernate.updateCargo(cargo);
+        hibControllers.update(cargo);
         int index = cargoListField.getSelectionModel().getSelectedIndex();
         cargoListField.getItems().set(index, cargo);
         cargoListField.refresh();
@@ -215,7 +229,7 @@ public class MainPage implements Initializable {
     public void deleteCargo() {
         int index = cargoListField.getSelectionModel().getSelectedIndex();
         cargoListField.getItems().remove(index);
-        cargoHibernate.deleteCargo(cargoListField.getSelectionModel().getSelectedItem());
+        hibControllers.delete(cargoListField.getSelectionModel().getSelectedItem());
 
         tripCargoList.getItems().remove(index);
     }
@@ -223,7 +237,7 @@ public class MainPage implements Initializable {
 
     public void addTruck() {
         Truck truck = new Truck(Integer.parseInt(truckManufactureYear.getText()), Integer.parseInt(truckLoadCapacity.getText()), Integer.parseInt(truckWeight.getText()), truckBrand.getSelectionModel().getSelectedItem(), Double.parseDouble(truckOdometer.getText()), Double.parseDouble(truckFuelTankCapacity.getText()), truckModel.getText());
-        truckHibernate.createTruck(truck);
+        hibControllers.create(truck);
         truckListField.getItems().add(truck);
 
         tripTruckList.getItems().add(truck);
@@ -241,7 +255,7 @@ public class MainPage implements Initializable {
     public void deleteTruck(ActionEvent actionEvent) {
         int index = truckListField.getSelectionModel().getSelectedIndex();
         truckListField.getItems().remove(index);
-        truckHibernate.deleteTruck(truckListField.getSelectionModel().getSelectedItem());
+        hibControllers.delete(truckListField.getSelectionModel().getSelectedItem());
 
         tripTruckList.getItems().remove(index);
     }
@@ -249,7 +263,7 @@ public class MainPage implements Initializable {
     public void updateTruck(ActionEvent actionEvent) {
         Truck truck = new Truck(Integer.parseInt(truckManufactureYear.getText()), Integer.parseInt(truckLoadCapacity.getText()), Integer.parseInt(truckWeight.getText()), truckBrand.getSelectionModel().getSelectedItem(), Double.parseDouble(truckOdometer.getText()), Double.parseDouble(truckFuelTankCapacity.getText()), truckModel.getText());
         int index = truckListField.getSelectionModel().getSelectedIndex();
-        truckHibernate.updateTruck(truck);
+        hibControllers.update(truck);
 
         truckListField.getItems().set(index, truck);
         truckListField.refresh();
@@ -266,7 +280,7 @@ public class MainPage implements Initializable {
         } else {
             checkPoint = new CheckPoint(Integer.parseInt(checkpointDur.getText()), checkpointArrived.getValue(), checkpointTitle.getText());
         }
-        checkpointHibernate.createCheckPoint(checkPoint);
+        hibControllers.create(checkPoint);
         checkpointListField.getItems().add(checkPoint);
 
         tripCheckList.getItems().add(checkPoint);
@@ -287,7 +301,7 @@ public class MainPage implements Initializable {
         } else {
             checkPoint = new CheckPoint(Integer.parseInt(checkpointDur.getText()), checkpointArrived.getValue(), checkpointTitle.getText());
         }
-        checkpointHibernate.updateCheckPoint(checkPoint);
+        hibControllers.update(checkPoint);
         int index = checkpointListField.getSelectionModel().getSelectedIndex();
         checkpointListField.getItems().set(index, checkPoint);
         checkpointListField.refresh();
@@ -300,7 +314,7 @@ public class MainPage implements Initializable {
         int index = checkpointListField.getSelectionModel().getSelectedIndex();
         checkpointListField.getItems().remove(index);
 
-        checkpointHibernate.deleteCheckPoint(checkpointListField.getSelectionModel().getSelectedItem());
+        hibControllers.delete(checkpointListField.getSelectionModel().getSelectedItem());
 
         tripCheckList.getItems().remove(index);
     }
@@ -309,7 +323,7 @@ public class MainPage implements Initializable {
     public void addTrip(ActionEvent actionEvent) {
         Trip trip = new Trip(tripTitle.getText(), startPointTitle.getText(), Integer.parseInt(startLn.getText()), Integer.parseInt(startLat.getText()), endPointTitle.getText(), Integer.parseInt(endLn.getText()), Integer.parseInt(endLat.getText()), tripCheckList.getSelectionModel().getSelectedItems(), tripCargoList.getSelectionModel().getSelectedItem(), tripTruckList.getSelectionModel().getSelectedItem());
 
-        tripHibernate.createTrip(trip);
+        hibControllers.create(trip);
         tripListField.getItems().add(trip);
     }
 
@@ -318,7 +332,7 @@ public class MainPage implements Initializable {
         int index = tripListField.getSelectionModel().getSelectedIndex();
         tripListField.getItems().remove(index);
 
-        tripHibernate.deleteTrip(tripListField.getSelectionModel().getSelectedItem());
+        hibControllers.delete(tripListField.getSelectionModel().getSelectedItem());
     }
 
     public void resetTrip(ActionEvent actionEvent) {
@@ -328,17 +342,12 @@ public class MainPage implements Initializable {
     public void updateTrip(ActionEvent actionEvent) {
         Trip trip = new Trip(tripTitle.getText(), startPointTitle.getText(), Integer.parseInt(startLn.getText()), Integer.parseInt(startLat.getText()), endPointTitle.getText(), Integer.parseInt(endLn.getText()), Integer.parseInt(endLat.getText()), tripCheckList.getSelectionModel().getSelectedItems(), tripCargoList.getSelectionModel().getSelectedItem(), tripTruckList.getSelectionModel().getSelectedItem());
 
-        tripHibernate.updateTrip(trip);
+        hibControllers.update(trip);
         int index = tripListField.getSelectionModel().getSelectedIndex();
         tripListField.getItems().set(index, trip);
         tripListField.refresh();
     }
 
-    public void initialize(URL location, ResourceBundle resources) {
-        this.cargoType.getItems().setAll(Arrays.asList(CargoType.values()));
-        this.truckBrand.getItems().setAll(Arrays.asList(TruckBrand.values()));
-
-    }
 
     public void openForum(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainPage.class.getResource("../view/forum-window.fxml"));
@@ -346,8 +355,7 @@ public class MainPage implements Initializable {
 
         Scene scene = new Scene(parent);
 
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("../styles/login" +
-                ".css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("../styles/login" + ".css")).toExternalForm());
         Stage stage = (Stage) forumBut.getScene().getWindow();
         stage.setTitle("Registration form");
         stage.setScene(scene);
@@ -355,6 +363,94 @@ public class MainPage implements Initializable {
     }
 
     public void openProfile(ActionEvent actionEvent) {
+    }
+
+    public void setInfo(User user) {
+        this.loggedUser = user;
+    }
+
+    public void setData(EntityManagerFactory emf) {
+        this.emf = emf;
+        this.userHibernate = new UserHibernate(emf);
+        this.hibControllers = new HibernateControllers(emf);
+
+        cargoListField.getItems().addAll(hibControllers.getAllrecords(Cargo.class));
+        checkpointListField.getItems().addAll(hibControllers.getAllrecords(CheckPoint.class));
+        truckListField.getItems().addAll(hibControllers.getAllrecords(Truck.class));
+        tripListField.getItems().addAll(hibControllers.getAllrecords(Trip.class));
+
+        tripCargoList.getItems().addAll(hibControllers.getAllrecords(Cargo.class));
+        tripCheckList.getItems().addAll(hibControllers.getAllrecords(CheckPoint.class));
+        tripTruckList.getItems().addAll(hibControllers.getAllrecords(Truck.class));
+        tripManagerList.getItems().addAll(userHibernate.getAllManagers());
+        tripDriverList.getItems().addAll(userHibernate.getAllDrivers());
+
+        LoadDriverData();
+        LoadManagerData();
+    }
+
+    private void LoadDriverData() {
+        List<Driver> driverList = userHibernate.getAllDrivers();
+
+        for (Driver d : driverList) {
+            DriverTable driverTable = new DriverTable();
+            driverTable.setColId(d.getId());
+            driverTable.setColName(d.getName());
+            driverTable.setColSurname(d.getSurname());
+            driverTable.setColLog(d.getLogin());
+            driverTable.setColEmail(d.getEmail());
+            driverTable.setColBirth(d.getBirthDate().toString());
+            driverTable.setColCertificate(d.getMedCertificateNum());
+            driverTable.setColLicense(d.getDriveLicenseNum());
+            driverData.add(driverTable);
+        }
+        driverTableView.setItems(driverData);
+    }
+
+    private void LoadManagerData() {
+        List<Manager> managerList = userHibernate.getAllManagers();
+
+        for (Manager m : managerList) {
+            ManagerTable managerTable = new ManagerTable();
+            managerTable.setColId(m.getId());
+            managerTable.setColName(m.getName());
+            managerTable.setColSurname(m.getSurname());
+            managerTable.setColLog(m.getLogin());
+            managerTable.setColEmail(m.getEmail());
+            managerTable.setColIsAdmin(m.isAdmin());
+            managerTable.setColPhone(m.getPhoneNum());
+            managerData.add(managerTable);
+        }
+
+        managerTableView.setItems(managerData);
+    }
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        this.cargoType.getItems().setAll(Arrays.asList(CargoType.values()));
+        this.truckBrand.getItems().setAll(Arrays.asList(TruckBrand.values()));
+
+
+        driverTableView.setEditable(true);
+        dColId.setCellValueFactory(new PropertyValueFactory<>("colId"));
+        dColLog.setCellValueFactory(new PropertyValueFactory<>("colLog"));
+        dColName.setCellValueFactory(new PropertyValueFactory<>("colName"));
+        dColSurname.setCellValueFactory(new PropertyValueFactory<>("colSurname"));
+        dColEmail.setCellValueFactory(new PropertyValueFactory<>("colEmail"));
+        dColBirth.setCellValueFactory(new PropertyValueFactory<>("colBirth"));
+        dColLicense.setCellValueFactory(new PropertyValueFactory<>("colLicense"));
+        dColCertificate.setCellValueFactory(new PropertyValueFactory<>("colCertificate"));
+
+
+        managerTableView.setEditable(true);
+        mColId.setCellValueFactory(new PropertyValueFactory<>("colId"));
+        mColLog.setCellValueFactory(new PropertyValueFactory<>("colLog"));
+        mColName.setCellValueFactory(new PropertyValueFactory<>("colName"));
+        mColSurname.setCellValueFactory(new PropertyValueFactory<>("colSurname"));
+        mColEmail.setCellValueFactory(new PropertyValueFactory<>("colEmail"));
+        mColIsAdmin.setCellValueFactory(new PropertyValueFactory<>("colIsAdmin"));
+        mColPhone.setCellValueFactory(new PropertyValueFactory<>("colPhone"));
     }
 }
 

@@ -2,47 +2,55 @@ package hibernateControllers;
 
 import model.Driver;
 import model.Manager;
-import model.Truck;
 import model.User;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 
 public class UserHibernate {
     private EntityManagerFactory emf;
 
     public UserHibernate(EntityManagerFactory emf) {
-     this.emf = emf;
+        this.emf = emf;
     }
 
     private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    public User validateUser(String login, String password){
+    public User validateUser(String login, String password) {
         EntityManager em = getEntityManager();
-        User user = null;
+        Driver driver = null;
+        Manager manager = null;
 
         TypedQuery<Driver> queryD = em.createQuery(
                 "SELECT u FROM Driver u WHERE u.login = :login AND u.password = :password", Driver.class);
         queryD.setParameter("login", login);
         queryD.setParameter("password", password);
-        user = queryD.getSingleResult();
+        try {
+            driver = queryD.getSingleResult();
+        } catch (NoResultException | NonUniqueResultException ex) {}
 
-        if(user == null){
+        if (driver == null) {
             TypedQuery<Manager> queryM = em.createQuery(
-                    "SELECT u FROM Driver u WHERE u.login = :login AND u.password = :password", Manager.class);
-            queryM.setParameter("login", "example_user");
-            queryM.setParameter("password", "example_password");
-            user = queryM.getSingleResult();
+                    "SELECT u FROM Manager u WHERE u.login = :login AND u.password = :password", Manager.class);
+            queryM.setParameter("login", login);
+            queryM.setParameter("password", password);
+            try {
+                manager = queryM.getSingleResult();
+            }catch (NoResultException | NonUniqueResultException ex) {}
         }
-        return user;
+        if (driver != null) {
+            return driver;
+        } else if (manager != null) {
+            return manager;
+        } else {
+            return null;
+        }
     }
 
 
-    public List<Manager> getAllManagers(){
+    public List<Manager> getAllManagers() {
         EntityManager em = getEntityManager();
         List<Manager> resultList = null;
         try {
@@ -58,7 +66,7 @@ public class UserHibernate {
         return resultList;
     }
 
-    public List<Driver> getAllDrivers(){
+    public List<Driver> getAllDrivers() {
         EntityManager em = getEntityManager();
         List<Driver> resultList = null;
         try {
@@ -74,7 +82,7 @@ public class UserHibernate {
         return resultList;
     }
 
-    public void createDiver(Driver driver){
+    public void createDiver(Driver driver) {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
@@ -88,7 +96,8 @@ public class UserHibernate {
             }
         }
     }
-    public void updateDiver(Driver driver){
+
+    public void updateDiver(Driver driver) {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
@@ -102,7 +111,8 @@ public class UserHibernate {
             }
         }
     }
-    public void deleteDiver(Driver driver){
+
+    public void deleteDiver(Driver driver) {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
@@ -131,6 +141,7 @@ public class UserHibernate {
             }
         }
     }
+
     public void updateManager(Manager manager) {
         EntityManager em = getEntityManager();
         try {

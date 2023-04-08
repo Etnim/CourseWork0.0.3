@@ -51,8 +51,8 @@ public class LoginPage {
             Parent parent = fxmlLoader.load();
 
             MainPage mainpage = fxmlLoader.getController();
-            mainpage.setData(entityManagerFactory);
             mainpage.setInfo(user);
+            mainpage.setData(entityManagerFactory);
 
             Scene scene = new Scene(parent);
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("../styles/mainPage.css")).toExternalForm());

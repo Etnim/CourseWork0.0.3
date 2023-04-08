@@ -17,7 +17,7 @@ import java.util.List;
 @MappedSuperclass
 public abstract class User implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY,orhap)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected int id;
 
     @Column(unique = true)
