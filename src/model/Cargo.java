@@ -27,9 +27,9 @@ public class Cargo{
     private LocalDate dateUpdated;
     private String description;
 
-    @OneToOne
-    @JoinColumn(name="trip_id")
-    private Trip trip;
+    @OneToOne()
+    @JoinColumn(name="tripC_id")
+    private Trip tripC;
 
 
     public Cargo(int weight, int volume, int price, String title, CargoType cargoType, String description) {

@@ -23,9 +23,9 @@ public class Manager extends User{
     public void setAdmin(boolean admin){
         isAdmin = admin;
     }
-    @ManyToOne
-    @JoinColumn(name="trip_id")
-    private Trip trip;
+    @ManyToOne()
+    @JoinColumn(name="tripM_id")
+    private Trip tripM;
     public Manager(String login, String password, String name, String surname, String email, LocalDate birthDate, boolean isAdmin, String phoneNum) {
         super(login, password, name, surname, email, birthDate);
         this.isAdmin = isAdmin;

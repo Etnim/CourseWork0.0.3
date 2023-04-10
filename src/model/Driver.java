@@ -18,9 +18,9 @@ public class Driver extends User{
     private int exprYears;
     private String medCertificateNum;
     private String driveLicenseNum;
-    @OneToOne
-    @JoinColumn(name="trip_id")
-    private Trip trip;
+    @OneToOne()
+    @JoinColumn(name="tripD_id")
+    private Trip tripD;
 
     public Driver(String login, String password, String name, String surname, String email, LocalDate birthDate, int exprYears, String medCertificateNum, String driveLicenseNum) {
         super(login, password, name, surname, email, birthDate);

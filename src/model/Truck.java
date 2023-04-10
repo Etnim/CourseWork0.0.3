@@ -22,9 +22,9 @@ public class Truck {
     private double odometer;
     private double fuelTankCapacity;
     private String model;
-    @OneToOne
-    @JoinColumn(name="trip_id")
-    private Trip trip;
+    @OneToOne()
+    @JoinColumn(name="tripT_id")
+    private Trip tripT;
 
     public Truck(int manufactureYear, int loadCapacity, int weight, TruckBrand brand, double odometer, double fuelTankCapacity, String model) {
         this.manufactureYear = manufactureYear;

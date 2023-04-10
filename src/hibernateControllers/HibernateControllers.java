@@ -1,6 +1,6 @@
 package hibernateControllers;
 
-import model.Cargo;
+import model.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -8,6 +8,7 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
+
 
 public class HibernateControllers {
     private EntityManagerFactory emf;
@@ -38,7 +39,7 @@ public class HibernateControllers {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
-            em.persist(entity);
+            em.merge(entity);
             em.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,6 +55,21 @@ public class HibernateControllers {
         try {
             em.getTransaction().begin();
             em.remove(entity);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
+    public void deleteTrip(Trip trip){
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.remove(em.find(trip.getClass(), trip.getId()));
             em.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,6 +96,7 @@ public class HibernateControllers {
         }
         return null;
     }
+
 
     public<T> T getEntityBy(Class<T> entity, int id){
         EntityManager em = getEntityManager();

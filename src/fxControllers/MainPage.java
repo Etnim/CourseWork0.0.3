@@ -330,9 +330,9 @@ public class MainPage implements Initializable {
     public void deleteTrip(ActionEvent actionEvent) {
 
         int index = tripListField.getSelectionModel().getSelectedIndex();
+        Trip trip = tripListField.getSelectionModel().getSelectedItem();
+        hibControllers.deleteTrip(trip);
         tripListField.getItems().remove(index);
-
-        hibControllers.delete(tripListField.getSelectionModel().getSelectedItem());
     }
 
     public void resetTrip(ActionEvent actionEvent) {
@@ -341,7 +341,7 @@ public class MainPage implements Initializable {
 
     public void updateTrip(ActionEvent actionEvent) {
         Trip trip = new Trip(tripTitle.getText(), startPointTitle.getText(), Integer.parseInt(startLn.getText()), Integer.parseInt(startLat.getText()), endPointTitle.getText(), Integer.parseInt(endLn.getText()), Integer.parseInt(endLat.getText()), tripCheckList.getSelectionModel().getSelectedItems(), tripCargoList.getSelectionModel().getSelectedItem(), tripTruckList.getSelectionModel().getSelectedItem());
-
+        trip.setDateUpdated(LocalDate.now());
         hibControllers.update(trip);
         int index = tripListField.getSelectionModel().getSelectedIndex();
         tripListField.getItems().set(index, trip);

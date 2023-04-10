@@ -20,9 +20,9 @@ public class CheckPoint {
     private String title;
     private int duration;
     private LocalDate dateArrived;
-    @ManyToOne
-    @JoinColumn(name="trip_id")
-    private Trip trip;
+    @ManyToOne()
+    @JoinColumn(name="tripCh_id")
+    private Trip tripCh;
 
     public CheckPoint(int duration, LocalDate dateArrived, String title) {
         this.duration = duration;
